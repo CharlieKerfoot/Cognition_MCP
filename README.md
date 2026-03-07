@@ -16,14 +16,22 @@ Sign up for a free key at https://newsapi.org (100 requests/day on the free tier
 
 ### 3. Configure Claude Desktop
 
-Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Claude Desktop launches MCP servers with a minimal PATH that may not include `uv`. A wrapper script handles this by sourcing your shell profile first.
+
+Make the included wrapper executable:
+
+```bash
+chmod +x /absolute/path/to/mcp_server/run.sh
+```
+
+Then edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "cognition": {
-      "command": "uv",
-      "args": ["run", "--directory", "/absolute/path/to/mcp_server", "cognition-mcp"],
+      "command": "/absolute/path/to/mcp_server/run.sh",
+      "args": [],
       "env": {
         "NEWSAPI_KEY": "your_key_here"
       }
