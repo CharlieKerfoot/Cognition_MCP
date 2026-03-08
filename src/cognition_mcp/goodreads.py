@@ -4,23 +4,22 @@ import feedparser
 import httpx
 
 
-async def resolve_user_id(username: str) -> str:
-	async with httpx.AsyncClient(follow_redirects=True) as client:
-		response = await client.get(
-			f'https://www.goodreads.com/{username}',
-			headers={'User-Agent': 'Mozilla/5.0'},
-		)
-	match = re.search(r'/user/show/(\d+)', str(response.url))
+def extract_user_id(url_or_id: str) -> str:
+	stripped = url_or_id.strip()
+	if re.fullmatch(r'\d+', stripped):
+		return stripped
+	match = re.search(r'/(?:review/list|user/show)/(\d+)', stripped)
 	if not match:
 		raise ValueError(
-			f'Could not resolve Goodreads user ID for "{username}". '
-			'Make sure your profile is public and the username is correct.'
+			f'Could not find a Goodreads user ID in "{url_or_id}". '
+			'Pass your profile URL (e.g. https://www.goodreads.com/review/list/167725774-your-name) '
+			'or just the numeric ID.'
 		)
 	return match.group(1)
 
 
-async def fetch_read_shelf(username: str) -> list[dict]:
-	user_id = await resolve_user_id(username)
+async def fetch_read_shelf(url_or_id: str) -> list[dict]:
+	user_id = extract_user_id(url_or_id)
 	url = f'https://www.goodreads.com/review/list_rss/{user_id}?shelf=read'
 	async with httpx.AsyncClient() as client:
 		response = await client.get(url, headers={'User-Agent': 'Mozilla/5.0'})

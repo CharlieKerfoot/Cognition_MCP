@@ -1,7 +1,7 @@
 [project]
 name = "cognition-mcp"
 version = "0.1.0"
-description = "MCP server for surfacing insights from your reading and viewing history"
+description = "MCP server for surfacing insights from your reading, viewing, and note-taking history"
 requires-python = ">=3.13"
 dependencies = [
     "mcp[cli]>=1.0.0",

@@ -1,6 +1,6 @@
 # Cognition MCP Server
 
-An MCP server for Claude Desktop that surfaces insights from your reading and viewing history.
+An MCP server for Claude Desktop that surfaces insights from your reading, viewing, and thinking history — connecting your Goodreads books, Letterboxd films, and Obsidian notes to each other and to current events.
 
 ## Setup
 
@@ -46,24 +46,26 @@ Restart Claude Desktop after saving.
 
 In Claude Desktop:
 
-- **Goodreads**: "Connect my Goodreads account, my username is johndoe"
+- **Goodreads**: "Connect my Goodreads account: https://www.goodreads.com/review/list/167725774-your-name"
 - **Letterboxd (recent)**: "Connect my Letterboxd account, my username is johndoe"
-- **Letterboxd (full history)**: Export your data from Letterboxd Settings → Import & Export, then:
-  "Import my Letterboxd diary CSV from /path/to/diary.csv"
+- **Letterboxd (full history)**: Export your data from Letterboxd Settings → Import & Export, unzip, then upload `diary.csv` to Claude and say: "Import my Letterboxd diary CSV" (Claude will read the file and pass the contents automatically)
+- **Obsidian**: "Connect my Obsidian vault at /Users/you/Documents/MyVault"
 
 ## Tools
 
 | Tool | Description |
 |------|-------------|
-| `connect_goodreads(username)` | Load your Goodreads "read" shelf via RSS |
+| `connect_goodreads(profile_url_or_id)` | Load your Goodreads "read" shelf via RSS |
 | `connect_letterboxd(username)` | Load recent Letterboxd diary via RSS (~50 entries) |
-| `import_letterboxd_csv(file_path)` | Import complete Letterboxd history from exported diary.csv |
-| `get_media_library()` | Show a summary of your cached books and films |
-| `explore_idea(idea)` | Find connections between a personal idea and your media |
-| `explore_current_events(topic)` | Find connections between current news and your media |
+| `import_letterboxd_csv(csv_content)` | Import complete Letterboxd history from exported diary.csv content |
+| `connect_obsidian(vault_path)` | Load all notes from an Obsidian vault |
+| `get_media_library()` | Show a summary of your cached books, films, and notes |
+| `explore_idea(idea)` | Find connections between a personal idea and your books, films, and notes |
+| `explore_current_events(topic)` | Find connections between current news and your books, films, and notes |
 
 ## Example prompts
 
-- "I've been thinking about how institutions calcify and resist change even when it's harmful — how does this show up in what I've read and watched?"
+- "I've been thinking about how institutions calcify and resist change even when it's harmful — how does this show up in what I've read, watched, and written?"
 - "How do current events around AI regulation connect to my media library?"
+- "What's the most surprising connection between my own notes and something I've read or watched?"
 - "What books or films I've consumed deal most directly with the theme of loneliness in modern life?"

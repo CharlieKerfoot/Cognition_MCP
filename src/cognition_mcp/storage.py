@@ -8,9 +8,11 @@ LIBRARY_FILE = CACHE_DIR / 'library.json'
 _EMPTY: dict = {
 	'books': [],
 	'films': [],
+	'notes': [],
 	'meta': {
 		'goodreads_username': None,
 		'letterboxd_username': None,
+		'obsidian_vault': None,
 		'last_synced': None,
 	},
 }
@@ -18,9 +20,12 @@ _EMPTY: dict = {
 
 def load() -> dict:
 	if not LIBRARY_FILE.exists():
-		return {**_EMPTY, 'books': [], 'films': [], 'meta': dict(_EMPTY['meta'])}
+		return {**_EMPTY, 'books': [], 'films': [], 'notes': [], 'meta': dict(_EMPTY['meta'])}
 	with LIBRARY_FILE.open() as f:
-		return json.load(f)
+		data = json.load(f)
+	data.setdefault('notes', [])
+	data['meta'].setdefault('obsidian_vault', None)
+	return data
 
 
 def save(library: dict) -> None:
